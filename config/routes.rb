@@ -1,6 +1,14 @@
 # app/config/routes.rb
 
 Rails.application.routes.draw do
+   # ユーザ認証
+  devise_for :users
+
+   # マイページ
+  resources :mypage, only: [:show]
+
+  # 商品関連
+  resources :products
   # 商品登録
   get 'products/new'
   post 'products', to: 'products#create'  # 登録
@@ -31,4 +39,6 @@ resources :products
 
   # Defines the root path route ("/")
   # root "posts#index"
+   devise_for :users
+   resources :mypage, only: [:show] # ユーザ情報の詳細表
 end
