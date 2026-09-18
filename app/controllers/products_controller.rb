@@ -1,4 +1,6 @@
 class ProductsController < ApplicationController
+      # index・showアクション以外は管理者のみアクセス可能
+    before_action :check_admin, except: [:index, :show]
   # 新規登録
   def new
     # 新しい商品を作成するための空のインスタンスを用意
@@ -60,4 +62,11 @@ class ProductsController < ApplicationController
     def product_params
       params.require(:product).permit(:name, :description, :price)
     end
+      # 管理者確認メソッド
+     def check_admin
+       unless current_user.admin_flg
+         # 管理者でない場合、商品一覧ページにリダイレクト
+         redirect_to products_path, alert: '管理者権限が必要です。'
+       end
+     end
 end
