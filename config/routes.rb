@@ -1,15 +1,26 @@
 # app/config/routes.rb
 
 Rails.application.routes.draw do
+  get "orders/new"
    # ユーザ認証
   devise_for :users
 
    # マイページ
   resources :mypage, only: [:show]
 
-  # 商品関連
+ # 商品関連
   resources :products
 
+  # 注文関連
+  resources :orders, only: [:index, :new, :create] do 
+    collection do
+      post :confirm   # 注文確認
+    end
+
+    member do
+      get :complete  # 注文完了
+    end
+  end
   # トップページ
   root to: "homes#top"
 
